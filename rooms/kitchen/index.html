@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.controls.min.js"></script>
+    </head>
+    <body>
+      <a-scene>
+        <!-- speed: -0.1 inverts movement controls, which is more intuitive when you are moving the AR content to match the real world -->
+        <a-entity id="rig" movement-controls="speed: -0.1">
+          <a-camera position="0 1.6 0">
+          </a-camera>
+        </a-entity>
+        <a-entity position="0 0 -2">
+
+          <!-- Main island-->
+          <!-- left side -->
+          <a-box position="-0.7 0.885 0" height="0.03" width="0.4" depth="0.56" color="#b3934d"></a-box>
+          <a-box position="-0.7 0.435 0" height="0.87" width="0.4" depth="0.56" color="#bba"></a-box>
+          <!-- behind range -->
+          <a-box position="0 0.885 -0.56" height="0.03" width="1.8" depth="0.56" color="#b3934d"></a-box>
+          <a-box position="0 0.435 -0.56" height="0.87" width="1.8" depth="0.56" color="#bba"></a-box>
+          <!-- right section -->
+          <a-box position="1.5 0.885 -0.14" height="0.03" width="2" depth="0.84" color="#b3934d"></a-box>
+          <a-box position="1.35 0.435 0" height="0.87" width="1.7" depth="0.56" color="#Bba"></a-box>
+          <!-- drawers -->
+          <a-plane position="0.9 0.785 0.281" height="0.15" width="0.76" color="#aa9"></a-plane>
+          <a-plane position="0.9 0.555 0.281" height="0.25" width="0.76" color="#aa9"></a-plane>
+          <a-plane position="0.9 0.275 0.281" height="0.25" width="0.76" color="#aa9"></a-plane>
+
+          <!-- fridge door -->
+          <a-plane position="1.6 0.48 0.281" height="0.67" width="0.5" color="#555"></a-plane>
+          <a-box position="1.9 0.51 0.58" height="0.72" width="0.02" depth="0.6" color="#Bba">
+            <a-box position="-0.09 0 0" height="0.6" width="0.18" depth="0.5" color="#bba">
+            </a-box>
+          </a-box>
+
+          <!-- final opening -->
+          <a-plane position="2.05 0.48 0.281" height="0.67" width="0.26" color="#555"></a-plane>
+
+          <!--range-->
+          <a-box position="0 0.45 0.01" height="0.9" width="0.98" depth="0.54" color="#333"></a-box>
+          <a-circle position="-0.25 0.91 -0.12" rotation="-90 0 0" radius="0.1" color="#555"></a-circle>
+          <a-circle position="0.25 0.91 -0.12" rotation="-90 0 0" radius="0.1" color="#555"></a-circle>
+          <a-circle position="-0.25 0.91 0.12" rotation="-90 0 0" radius="0.1" color="#555"></a-circle>
+          <a-circle position="0.25 0.91 0.12" rotation="-90 0 0" radius="0.1" color="#555"></a-circle>
+
+          <a-plane position="-0.225 0.48 0.281" height="0.67" width="0.4" color="#555"></a-plane>
+          <a-plane position="0.225 0.48 0.281" height="0.67" width="0.4" color="#555"></a-plane>
+
+
+          <!-- sideboard-->
+          <a-box position="-2.28 0.885 -0.47" height="0.03" width="0.56" depth="1.5" color="#b3934d"></a-box>
+          <a-box position="-2.28 0.435 -0.47" height="0.87" width="0.56" depth="1.5" color="#bba"></a-box>
+          <a-triangle position="-2 0.9 0.28" vertex-a="0 0 0" vertex-b="-0.56 0 0" vertex-c="0 0 0.56" color="#b3934d"></a-triangle>
+          <a-plane position="-2 0.885 0.56" rotation="0 90 0" height="0.03" width="0.56" color="#b3934d"></a-plane>
+          <a-plane position="-2 0.435 0.56" rotation="0 90 0" height="0.87" width="0.56" color="#bba"></a-plane>
+          <!--sinks-->
+          <a-plane position="-2.28 0.9001 0.11" rotation="-90 0 0" height="0.35" width="0.5" color="#fff"></a-plane>
+          <a-plane position="-2.28 0.9001 -0.29" rotation="-90 0 0" height="0.35" width="0.5" color="#fff"></a-plane>
+
+
+          <!--cupboard doors-->
+          <a-plane position="-1.999 0.48 0.16" rotation="0 90 0" height="0.7" width="0.45" color="#aa9"></a-plane>
+          <a-plane position="-1.999 0.48 -0.34" rotation="0 90 0" height="0.7" width="0.45" color="#aa9"></a-plane>
+
+          <!--microwave-->
+          <a-plane position="-1.999 0.65 -0.9" rotation="0 90 0" height="0.35" width="0.5" color="#333"></a-plane>
+
+          <!-- ceiling extractor -->
+          <a-box position="0 2.5 0" height="0.2" width="1.25" depth="0.75" color="#fff">
+            <a-plane position="0 -0.101 0" width="1" height="0.6" rotation="90 0 0" color="#666">
+            </a-plane>
+          </a-box>
+
+          <!-- lights -->
+          <a-box position="-1.5 2.5 -0.2" height="0.05" width="0.4" depth="0.05" color="#333">
+            <a-cylinder position="-0.15 -0.1 0" radius="0.01" height="0.2" color="#333"></a-cylinder>
+            <a-cylinder position="0.15 -0.1 0" radius="0.01" height="0.2" color="#333"></a-cylinder>
+            <a-box position="0 -0.2 0" height="0.05" width="1.16" depth="0.05" color="#333"></a-box>
+          </a-box>
+
+          <a-box position="1.5 2.5 -0.2" height="0.05" width="0.4" depth="0.05" color="#333">
+            <a-cylinder position="-0.15 -0.2 0" radius="0.01" height="0.4" color="#333"></a-cylinder>
+            <a-cylinder position="0.15 -0.2 0" radius="0.01" height="0.4" color="#333"></a-cylinder>
+            <a-box position="0 -0.4 0" height="0.05" width="1.16" depth="0.05" color="#333"></a-box>
+          </a-box>
+
+        </a-entity>
+
+
+
+      </a-scene>
+    </body>
+  </html>
