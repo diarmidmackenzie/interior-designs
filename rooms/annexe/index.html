@@ -4,12 +4,16 @@
 <head>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="../../components/positioning.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
 </head>
 
 <body>
-  <a-scene>
+  <a-scene environment="preset:forest; lighting:none">
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
+    
 
-    <a-entity rotation="0 180 0" position="0 0 -6">
+    <a-entity rotation="0 180 0" position="0 0.1 -6">
       <a-camera></a-camera>
     </a-entity>>
 
@@ -19,7 +23,9 @@
     <a-mixin id="worktop" material="color: #ba8"></a-mixin>
     <a-mixin id="floor" material="color: #bbb"></a-mixin>
     <a-mixin id="freezer" material="color: #fff"></a-mixin>
-    <a-entity id="container" position="2.25 0 -6">
+    <a-entity id="container" position="2.25 0.1 -6">
+
+      <a-entity light="type: point; color: #FFF; intensity: 0.2" position="-1 2.3 0"></a-entity>
 
       <a-box id="floor1" mixin="floor" width="2.8" depth="5.72" height="0.1" back="0" top="0" right="0"></a-box>
       <a-box id="floor2" mixin="floor" width="4" depth="8" height="0.1" front="0" top="0" right="0"></a-box>
