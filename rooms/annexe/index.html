@@ -30,6 +30,7 @@
     <a-mixin id="velux" material="color: #fff"></a-mixin>
     <a-mixin id="handle" material="color: #111"></a-mixin>
     <a-mixin id="glass" material="color: #aac; opacity:0.3;transparent: true"></a-mixin>
+    <a-mixin id="sofa" material="color: #755331"></a-mixin>
 
     <a-entity id="container" position="2.25 0.1 -6">
 
@@ -357,6 +358,17 @@
           width="0.75" depth="0.9" height="1.8"
           front="0" bottom="0" left="-3.53">
        </a-box>
+
+       <a-entity id="sofa" rotation="0 -90 0" front="-2.3" right="0" bottom="0">
+          <a-box mixin="sofa" width="0.2" depth="0.8" height="0.7" left="-1.25" bottom="0" back="0"></a-box>
+          <a-box mixin="sofa" width="0.2" depth="0.8" height="0.7" right="1.25" bottom="0" back="0"></a-box>
+          <a-box mixin="sofa" width="2.5" depth="0.2" height="0.8" right="1.25" bottom="0" back="0"></a-box>
+          <a-box mixin="sofa" width="2.5" depth="0.8" height="0.45" right="1.25" bottom="0" back="0"></a-box>
+       </a-entity>
+
+       <a-box mixin="sofa" width="0.5" height="0.75" depth="1.5" front="-2.3" left="-3.58" bottom="0"></a-box>
+       <a-box color="#111" width="0.1" height="0.83" depth="1.45" front="-2.325" left="-3.4" bottom="0.85"></a-box>
+       <a-box color="#111" width="0.2" height="0.1" depth="0.5" front="-2.8" left="-3.45" bottom="0.75"></a-box>
     </a-entity>
   </a-scene>
 </body>
