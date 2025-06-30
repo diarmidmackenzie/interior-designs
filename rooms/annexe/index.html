@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <a-scene Xenvironment="preset:forest; lighting:none">
+  <a-scene environment="preset:forest; lighting:none">
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
@@ -84,10 +84,14 @@
       </a-box>
       <a-box id="back wall return l" mixin="wall"
              width="2.5" depth="0.38" height="0.3" rotation="0 0 35"
-             back="-8" bottom="2.2" left="-3.6"></a-box>
+             back="-8" bottom="2.2" left="-3.6">
+         <a-box mixin="window" back="-0.09" top="-0.15" width="2.5" depth="0.08" height="0.08"></a-box>
+       </a-box>
        <a-box id="back wall return r" mixin="wall"
              width="2.5" depth="0.38" height="0.3" rotation="0 0 -35"
-             back="-8" bottom="2.2" right="0.02"></a-box>
+             back="-8" bottom="2.2" right="0.02">
+         <a-box mixin="window" back="-0.09" top="-0.15" width="2.5" depth="0.08" height="0.08"></a-box>
+       </a-box>
       <a-box id="back wall 2" mixin="wall"
              width="0.68" depth="0.38" height="2.4"
              back="-8" bottom="0" left="-0.3">
@@ -97,6 +101,8 @@
          <a-box mixin="window" top="1.15" width="2.98" depth="0.08" height="0.08"></a-box>
          <a-box mixin="window" right="1.49" width="0.08" depth="0.08" height="2.3"></a-box>
          <a-box mixin="window" left="-1.49" width="0.08"depth="0.08" height="2.3"></a-box>
+         <a-box mixin="window" bottom="-1.15" right="0.5" width="0.08"depth="0.08" height="3.2"></a-box>
+         <a-box mixin="window" bottom="-1.15" left="-0.5" width="0.08"depth="0.08" height="3.2"></a-box>
       </a-entity>
 
 
