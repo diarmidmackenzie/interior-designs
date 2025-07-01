@@ -14,10 +14,10 @@
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
-    <a-entity rotation="0 180 0" position="0 0.1 -6">
+    <a-entity id="rig" rotation="0 180 0" position="0 0.1 -6">
       <a-camera wasd-controls="acceleration: 10"></a-camera>
       <a-entity id="left-hand" hand-controls="hand: left"
-                blink-controls="button: trigger; snapTurn=false;rotateOnTeleport=false"></a-entity>
+                blink-controls="cameraRig=#rig;button: trigger; snapTurn=false;rotateOnTeleport=false"></a-entity>
       <a-entity id="right-hand" hand-controls="hand: right"></a-entity>
     </a-entity>>
 
