@@ -7,6 +7,22 @@
   <script src="../../components/positioning.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls@0.4.3/dist/aframe-blink-controls.min.js"></script>
+  <script>
+       AFRAME.registerComponent('movement-toggle', {
+           schema: {
+              type: 'selector'
+           },
+           init() {
+               this.el.addEventListener('gripdown', () => {
+                  this.data.setAttribute("movement-controls", "enabled:true")
+               })
+               this.el.addEventListener('gripup', () => {
+                  this.data.setAttribute("movement-controls", "enabled:false")
+               })
+           },
+         }
+       )
+  </script>
 </head>
 
 <body>
@@ -14,10 +30,9 @@
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
-    <a-entity id="player" rotation="0 180 0" position="0 0.1 -6">
-      <a-camera wasd-controls="acceleration: 10"></a-camera>
-      <a-entity id="left-hand" hand-controls="hand: left"
-                blink-controls="button: trigger"></a-entity>
+    <a-entity id="player" rotation="0 180 0" position="0 0.1 -6" movement-controls="controls:gamepad; enabled:false">
+      <a-camera id="camera" wasd-controls="acceleration: 10"></a-camera>
+      <a-entity id="left-hand" hand-controls="hand: left" movement-toggle="#player"></a-entity>
       <a-entity id="right-hand" hand-controls="hand: right"></a-entity>
     </a-entity>>
 
