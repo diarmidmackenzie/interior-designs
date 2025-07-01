@@ -3,10 +3,9 @@
 
 <head>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.0.0/dist/aframe-extras.controls.min.js"></script>
   <script src="../../components/positioning.js"></script>
   <script src="https://unpkg.com/aframe-environment-component@1.5.x/dist/aframe-environment-component.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls@0.4.3/dist/aframe-blink-controls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-locomotion@0.2.0/dist/aframe-locomotion.umd.min.js"></script>
   <script>
        AFRAME.registerComponent('movement-toggle', {
            schema: {
@@ -30,10 +29,15 @@
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
-    <a-entity id="player" rotation="0 180 0" position="0 0.1 -6" movement-controls="controls:gamepad; enabled:false">
+    <a-entity id="rig" rotation="0 180 0" position="0 0.1 -6" movement-controls="controls:gamepad; enabled:false">
       <a-camera id="camera" wasd-controls="acceleration: 10"></a-camera>
-      <a-entity id="left-hand" hand-controls="hand: left" movement-toggle="#player"></a-entity>
-      <a-entity id="right-hand" hand-controls="hand: right"></a-entity>
+       <a-entity
+              hand-controls="hand: left">
+       </a-entity>
+       <a-entity
+              hand-controls="hand: right"
+              smooth-locomotion="target: #rig; reference: #camera">
+       </a-entity>
     </a-entity>>
 
     <a-mixin id="wall" material="color: #E9E0D2"></a-mixin>
@@ -208,6 +212,8 @@
         </a-entity>
       </a-box>
 
+      <a-box depth="8" height="0.2" width="0.1" bottom="3.4" back="-8" right="-1.74"></a-box>
+
       <a-box id="ceiling1-l" mixin="ceiling"
              rotation="0 0 35"
              width="2.5" depth="2.25" height="0.3"
@@ -303,7 +309,7 @@
          <a-box mixin="handle" width="0.02" depth="0.02" height="0.25" position="-0.2 0 -0.31"></a-box>
          <a-box mixin="handle" width="0.02" depth="0.02" height="0.25" position="-0.2 -0.35 -0.31"></a-box>
          <a-box id="oven" color="#555" width="0.599" depth="0.6" height="0.5" position="0.15 0 -0.01">
-              <a-plane rotation="0 180 0" color="black" position="0 -0.03 -0.301" width="0.55" height="0.4"></a-plane>
+              <a-plane rotation="0 180 0" color="black" position="0 -0.03 -0.303" width="0.55" height="0.4"></a-plane>
          </a-box>
          <a-box mixin="handle" width="0.3" depth="0.02" height="0.02" position="0.15 -0.35 -0.31"></a-box>
          <a-box mixin="handle" width="0.3" depth="0.02" height="0.02" position="0.15 -0.7 -0.31"></a-box>
