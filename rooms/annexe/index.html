@@ -29,7 +29,7 @@
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
-    <a-entity id="rig" rotation="0 180 0" position="0 0.1 -6" movement-controls="controls:gamepad; enabled:false">
+    <a-entity id="rig" rotation="0 0 0" position="0 0.1 4" movement-controls="controls:gamepad; enabled:false">
       <a-camera id="camera" wasd-controls="acceleration: 10"></a-camera>
        <a-entity
               hand-controls="hand: left">
@@ -292,13 +292,13 @@
       </a-box>
 
       <a-box id="bathroom back wall" mixin="wall"
-             width="1.81" depth="0.1" height="2.4"
+             width="1.85" depth="0.1" height="2.4"
              front="5.72" bottom="0" right="0.08">
       </a-box>
 
       <a-box id="bedroom door" mixin="wall"
-             width="1" depth="0.1" height="2.4"
-             front="5.72" bottom="0" right="-1.8">
+             width="1" depth="0.1" height="0.4"
+             front="5.72" bottom="2" right="-1.8">
       </a-box>
 
       <!-- kitchen cabinets-->
@@ -391,7 +391,113 @@
        <a-box mixin="sofa" width="0.5" height="0.75" depth="1.5" front="-2.3" left="-3.58" bottom="0"></a-box>
        <a-box color="#111" width="0.1" height="0.83" depth="1.45" front="-2.325" left="-3.4" bottom="0.85"></a-box>
        <a-box color="#111" width="0.2" height="0.1" depth="0.5" front="-2.8" left="-3.45" bottom="0.75"></a-box>
+
+       <a-box id="bedroom back left corner" mixin="wall"
+            width="0.74" depth="0.1" height="2.4"
+            front="5.72" bottom="0" right="-3.1">
+       ></a-box>
+       
+
+       <a-entity id="bedroom" back="5.72" bottom="-0.1" right="0.38">
+         <!-- Bedroom co-ordinate system: origin = back-right interior corner-->
+         <a-box id="bedroom floor" mixin="floor"
+                     width="3.84" depth="5.91" height="0.1"
+                     back="0" top="0" right="0">
+          </a-box>
+          <a-box id="bedroom ceiling flat" mixin="ceiling"
+              depth="2.94" width="4.6" height="0.3"
+              back="0" bottom="2.4" right="0.38">
+          </a-box>
+          <a-box id="bedroom ceiling vertical" mixin="ceiling"
+              depth="0.3" width="4.6" height="2"
+              front="2.94" bottom="2.4" right="0.38">
+          </a-box>
+          <a-box id="bedroom ceiling slope left" mixin="ceiling"
+              rotation="0 0 25"
+              depth="3.38" width="2.5" height="0.3"
+              back="2.94" bottom="2.4" left="-4.22">
+          </a-box>
+          <a-box id="bedroom ceiling slope right" mixin="ceiling"
+              rotation="0 0 -25"
+              depth="3.38" width="2.5" height="0.3"
+              back="2.94" bottom="2.4" right="0.38">
+          </a-box>
+          <a-box id="bedroom ceiling slope front" mixin="ceiling"
+              rotation="25 0 0"
+              depth="3.38" width="4.6" height="0.3"
+              front="6.29" bottom="2.4" right="0.38">
+          </a-box>
+
+
+          <a-box id="bedroom right wall" mixin="wall"
+                     width="0.3" depth="0.62" height="2.4"
+                     back="0" bottom="0" left="0">
+         </a-box>
+         <a-box id="bedroom right wall beneath window" mixin="wall"
+                     width="0.3" depth="1.22" height="0.8"
+                     back="0.62" bottom="0" left="0">
+         </a-box>
+         <a-box id="bedroom right wall above window" mixin="wall"
+                     width="0.3" depth="1.22" height="0.2"
+                     back="0.62" bottom="2.2" left="0">
+         </a-box>
+         <a-box id="bedroom right wall 2" mixin="wall"
+                     width="0.38" depth="2.02" height="2.4"
+                     back="1.84" bottom="0" left="-0.08">
+         </a-box>
+         <a-box id="bedroom right wall beneath window 2" mixin="wall"
+                     width="0.38" depth="0.75" height="0.8"
+                     back="3.86" bottom="0" left="-0.08">
+         </a-box>
+         <a-box id="bedroom right wall above window 2" mixin="wall"
+            width="0.38" depth="0.75" height="0.2"
+            back="3.86" bottom="2.2" left="-0.08">
+         </a-box>
+         <a-box id="bedroom right wall 3" mixin="wall"
+                     width="0.38" depth="1.3" height="2.4"
+                     back="4.61" bottom="0" left="-0.08">
+         </a-box>
+         <a-box id="bedroom end wall right" mixin="wall"
+                     width="0.82" depth="0.38" height="2.4"
+                     back="5.91" bottom="0" right="0.3">
+         </a-box>
+         <a-box id="bedroom end wall beneath window" mixin="wall"
+                     width="2.42" depth="0.38" height="0.8"
+                     back="5.91" bottom="0" right="-0.52">
+         </a-box>
+         <a-box id="bedroom end wall above window" mixin="wall"
+              width="2.42" depth="0.38" height="0.2"
+              back="5.91" bottom="2.2" right="-0.52">
+         </a-box>
+         <a-box id="bedroom end wall left" mixin="wall"
+                     width="0.9" depth="0.38" height="2.4"
+                     back="5.91" bottom="0" right="-2.94">
+         </a-box>
+         <a-box id="bedroom left wall" mixin="wall"
+                     width="0.38" depth="1.7" height="2.4"
+                     front="6.29" bottom="0" right="-3.84">
+         </a-box>
+         <a-box id="bedroom left wall below window" mixin="wall"
+                     width="0.38" depth="0.75" height="0.8"
+                     front="4.59" bottom="0" right="-3.84">
+         </a-box>
+         <a-box id="bedroom left wall above window" mixin="wall"
+                     width="0.38" depth="0.75" height="0.2"
+                     front="4.59" bottom="2.2" right="-3.84">
+         </a-box>
+         <a-box id="bedroom left wall" mixin="wall"
+                     width="0.38" depth="3.84" height="2.4"
+                     front="3.84" bottom="0" right="-3.84">
+         </a-box>
+
+
+       </a-entity>
     </a-entity>
+
+
+    <!-- Bedroom -->
+
+
   </a-scene>
 </body>
 
