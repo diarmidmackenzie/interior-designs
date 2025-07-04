@@ -49,6 +49,8 @@
     <a-mixin id="window" material="color: #353C40"></a-mixin>
     <a-mixin id="velux" material="color: #fff"></a-mixin>
     <a-mixin id="bath" material="color: #fff"></a-mixin>
+    <a-mixin id="bath-cabinet" material="color: #ba8"></a-mixin>
+    <a-mixin id="bath-handle" material="color: #a97"></a-mixin>
     <a-mixin id="handle" material="color: #111"></a-mixin>
     <a-mixin id="glass" material="color: #aac; opacity:0.3;transparent: true"></a-mixin>
     <a-mixin id="sofa" material="color: #755331"></a-mixin>
@@ -174,18 +176,28 @@
         <a-box width="0.7" depth="0.1" height="0.4" front="0.8"></a-box>
         <a-box width="0.7" depth="1.6" height="0.1" front="0.8" right="0.35"></a-box>
       </a-entity>
-      <a-box id="bathroom-cabinets1" width="1.85" depth="0.46" height="0.8" mixin="bath"
+      <a-box id="bathroom-cabinets1" width="1.85" depth="0.46" height="0.8" mixin="bath-cabinet"
+                right="0.08" bottom="0" front="5.62">
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.575 0.2 -0.29"></a-box>
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.475 0.2 -0.29"></a-box>
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.05 0.2 -0.29"></a-box>
+      </a-box>
+      <a-box id="bathroom-cabinets2-base" width="0.56" depth="2" height="0.6" mixin="bath-cabinet"
+                right="0.08" bottom="0" front="5.62">
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.29 0.2 -0.75"></a-box>
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.29 0.2 -0.65"></a-box>
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.29 0.2 0"></a-box>
+         <a-box mixin="bath-handle" width="0.02" depth="0.02" height="0.1" position="-0.29 0.2 0.1"></a-box>
+      </a-box>
+      <a-box id="bathroom-cabinets2.1" width="0.56" depth="0.7" height="0.8" mixin="bath-cabinet"
                 right="0.08" bottom="0" front="5.62"></a-box>
-      <a-box id="bathroom-cabinets2-base" width="0.56" depth="2" height="0.6" mixin="bath"
-                right="0.08" bottom="0" front="5.62"></a-box>
-      <a-box id="bathroom-cabinets2.1" width="0.56" depth="0.7" height="0.8" mixin="bath"
-                right="0.08" bottom="0" front="5.62"></a-box>
-      <a-box id="bathroom-cabinets2.2" width="0.1" depth="0.5" height="0.8" mixin="bath"
+      <a-box id="bathroom-cabinets2.2" width="0.1" depth="0.5" height="0.8" mixin="bath-cabinet"
                 right="0.08" bottom="0" front="4.92"></a-box>
-      <a-box id="bathroom-cabinets2.2" width="0.1" depth="0.5" height="0.8" mixin="bath"
+      <a-box id="bathroom-cabinets2.2" width="0.1" depth="0.5" height="0.8" mixin="bath-cabinet"
                 left="-0.48" bottom="0" front="4.92"></a-box>
-      <a-box id="bathroom-cabinets2.2" width="0.56" depth="0.8" height="0.8" mixin="bath"
+      <a-box id="bathroom-cabinets2.2" width="0.56" depth="0.8" height="0.8" mixin="bath-cabinet"
                 right="0.08" bottom="0" front="4.42"></a-box>
+      
 
       <a-box id="right wall 3" mixin="wall"
              width="0.3" depth="2.2" height="2.4"
@@ -458,6 +470,19 @@
                      width="3.84" depth="5.91" height="0.1"
                      back="0" top="0" right="0">
           </a-box>
+          <a-box id="wardrobe" mixin="cabinet" width="1.9" depth="0.62" height="2.4"
+                  back="0" bottom="0" right="0">
+              <a-box mixin="handle" width="0.02" depth="0.02" height="0.3" position="-0.35 0.1 0.31"></a-box>
+              <a-box mixin="handle" width="0.02" depth="0.02" height="0.3" position="-0.45 0.1 0.31"></a-box>
+              <a-box mixin="handle" width="0.02" depth="0.02" height="0.3" position="0.35 0.1 0.31"></a-box>
+              <a-box mixin="handle" width="0.02" depth="0.02" height="0.3" position="0.45 0.1 0.31"></a-box>
+          </a-box>
+          <a-box id="headboard" depth="1.2" width="0.05" mixin="cabinet" height="1.2"
+            right="-0.08" bottom="0" back="2.24">
+          </a-box>
+          <a-box id="bed" depth="1.2" width="1.8" mixin="worktop" height="0.6"
+            right="-0.13" bottom="0" back="2.24">
+          </a-box>
           <a-box id="bedroom ceiling flat" mixin="ceiling"
               depth="2.94" width="4.14" height="0.3"
               back="0" bottom="2.4" right="0.3">
@@ -564,6 +589,17 @@
                      width="0.38" depth="1.3" height="2.4"
                      back="4.61" bottom="0" left="-0.08">
          </a-box>
+
+         <a-entity id="desk" bottom="0" right="-0.08" front="5.91">
+            <a-box mixin="cabinet" depth="0.6" width="3.4" height="0.1" position="0 0.4 0"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="1.6 0 0.25"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="-1.6 0 0.25"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="1.6 0 -0.25"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="-1.6 0 -0.25"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="0 0 0.25"></a-box>
+            <a-box mixin="cabinet" depth="0.1" width="0.1" height="0.8" position="0 0 -0.25"></a-box>
+         </a-entity>
+
          <a-box id="bedroom end wall right" mixin="wall"
                      width="0.82" depth="0.38" height="2.4"
                      back="5.91" bottom="0" right="0.3">
@@ -616,10 +652,6 @@
 
        </a-entity>
     </a-entity>
-
-
-    <!-- Bedroom -->
-
 
   </a-scene>
 </body>
