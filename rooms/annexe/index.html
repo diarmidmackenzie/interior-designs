@@ -56,11 +56,11 @@
 
       <a-entity light="type: point; color: #FFF; intensity: 0.2" position="-1 2.3 0"></a-entity>
 
-      <a-box id="floor1" mixin="floor" width="3.18" depth="5.72" height="0.1" back="0" top="0" right="0.38"></a-box>
+      <a-box id="floor1" mixin="floor" width="3.18" depth="6.86" height="0.1" back="0" top="0" right="0.38"></a-box>
       <a-box id="floor2" mixin="floor" width="4" depth="8" height="0.1" front="0" top="0" right="0"></a-box>
       <a-box id="left wall1"
              mixin="wall"
-             width="0.45" depth="5.72" height="2.4"
+             width="0.45" depth="4.72" height="2.4"
              back="0" bottom="0" right="-2.74">
       </a-box>
       <a-box id="left wall2" mixin="wall"
@@ -259,7 +259,7 @@
       </a-box>
 
       <a-box id="ceiling-kitchen" mixin="ceiling"
-             width="3.53" depth="5.72" height="0.3"
+             width="3.53" depth="6.82" height="0.3"
              back="0.01" bottom="2.4" right="0.38">
       </a-box>
 
@@ -394,38 +394,56 @@
 
        <a-box id="bedroom back left corner" mixin="wall"
             width="0.74" depth="0.1" height="2.4"
-            front="5.72" bottom="0" right="-3.1">
+            front="6.86" bottom="0" right="-2.74">
        ></a-box>
-       
-
-       <a-entity id="bedroom" back="5.72" bottom="-0.1" right="0.38">
+       <a-box id="bedroom back wall" mixin="wall"
+            width="2.34" depth="0.1" height="2.4"
+            front="6.86" bottom="0" right="0.38">
+       ></a-box>
+       <a-box id="bedroom back wall above door" mixin="wall"
+            width="0.8" depth="0.1" height="0.4"
+            front="6.86" bottom="2" right="-1.96">
+       ></a-box>
+       <a-box id="corridor left wall" mixin="wall"
+            width="0.1" depth="1.38" height="2.4"
+            front="6.86" bottom="0" right="-2.74">
+       ></a-box>
+       <a-box id="corridor above door to main house" mixin="wall"
+            width="0.1" depth="0.76" height="0.4"
+            front="5.48" bottom="2" right="-2.74">
+       ></a-box>
+       <a-box id="door to main house" mixin="cabinet"
+            width="0.08" depth="0.76" height="2"
+            front="5.48" bottom="0" right="-2.73">
+       ></a-box>
+       <a-entity id="bedroom" back="6.86" bottom="-0.1" right="0.38">
          <!-- Bedroom co-ordinate system: origin = back-right interior corner-->
          <a-box id="bedroom floor" mixin="floor"
                      width="3.84" depth="5.91" height="0.1"
                      back="0" top="0" right="0">
           </a-box>
           <a-box id="bedroom ceiling flat" mixin="ceiling"
-              depth="2.94" width="4.6" height="0.3"
-              back="0" bottom="2.4" right="0.38">
+              depth="2.94" width="4.14" height="0.3"
+              back="0" bottom="2.4" right="0.3">
           </a-box>
           <a-box id="bedroom ceiling vertical" mixin="ceiling"
-              depth="0.3" width="4.6" height="2"
-              front="2.94" bottom="2.4" right="0.38">
+              depth="0.3" width="4.14" height="2"
+              front="2.94" bottom="2.4" right="0.3">
           </a-box>
           <a-box id="bedroom ceiling slope left" mixin="ceiling"
               rotation="0 0 25"
               depth="3.38" width="2.5" height="0.3"
-              back="2.94" bottom="2.4" left="-4.22">
+              back="2.94" bottom="2.4" left="-3.84">
           </a-box>
           <a-box id="bedroom ceiling slope right" mixin="ceiling"
               rotation="0 0 -25"
               depth="3.38" width="2.5" height="0.3"
-              back="2.94" bottom="2.4" right="0.38">
+              back="2.94" bottom="2.4" right="0.3">
           </a-box>
           <a-box id="bedroom ceiling slope front" mixin="ceiling"
               rotation="25 0 0"
-              depth="3.38" width="4.6" height="0.3"
-              front="6.29" bottom="2.4" right="0.38">
+              depth="3.38" width="4.14" height="0.3"
+              front="6.29" bottom="2.4" right="0.3">
           </a-box>
 
 
@@ -458,7 +476,7 @@
                      back="4.61" bottom="0" left="-0.08">
          </a-box>
          <a-box id="bedroom end wall right" mixin="wall"
-                     width="0.82" depth="0.38" height="2.4"
+                     width="0.9" depth="0.38" height="2.4"
                      back="5.91" bottom="0" right="0.3">
          </a-box>
          <a-box id="bedroom end wall beneath window" mixin="wall"
@@ -475,19 +493,19 @@
          </a-box>
          <a-box id="bedroom left wall" mixin="wall"
                      width="0.38" depth="1.7" height="2.4"
-                     front="6.29" bottom="0" right="-3.84">
+                     front="6.29" bottom="0" left="-3.84">
          </a-box>
          <a-box id="bedroom left wall below window" mixin="wall"
                      width="0.38" depth="0.75" height="0.8"
-                     front="4.59" bottom="0" right="-3.84">
+                     front="4.59" bottom="0" left="-3.84">
          </a-box>
          <a-box id="bedroom left wall above window" mixin="wall"
                      width="0.38" depth="0.75" height="0.2"
-                     front="4.59" bottom="2.2" right="-3.84">
+                     front="4.59" bottom="2.2" left="-3.84">
          </a-box>
          <a-box id="bedroom left wall" mixin="wall"
                      width="0.38" depth="3.84" height="2.4"
-                     front="3.84" bottom="0" right="-3.84">
+                     front="3.84" bottom="0" left="-3.84">
          </a-box>
 
 
