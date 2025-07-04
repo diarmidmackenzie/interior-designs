@@ -29,7 +29,7 @@
     <a-entity light="type: ambient; color: #BBB"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>
 
-    <a-entity id="rig" rotation="0 0 0" position="0 0.1 4" movement-controls="controls:gamepad; enabled:false">
+    <a-entity id="rig" rotation="0 0 0" position="0 0.1 6" movement-controls="controls:gamepad; enabled:false">
       <a-camera id="camera" wasd-controls="acceleration: 10"></a-camera>
        <a-entity
               hand-controls="hand: left">
@@ -148,9 +148,19 @@
              back="2.22" bottom="0" left="0.08">
       </a-box>
       <a-box id="right wall 2.5" mixin="wall"
-             width="0.38" depth="0.9" height="1"
+             width="0.3" depth="0.9" height="0.8"
              back="2.62" bottom="0" left="0.08">
       </a-box>
+      <a-box id="right wall above window" mixin="wall"
+             width="0.3" depth="0.9" height="0.2"
+             back="2.62" bottom="2.2" left="0.08">
+      </a-box>
+      <a-entity id="window" back="2.62" bottom="0.8" left="0.18">
+              <a-box mixin="velux" back="-0.45" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" front="0.45" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" top="0.7" width="0.08" depth="0.9" height="0.08"></a-box>
+              <a-box mixin="velux" bottom="-0.7" width="0.08" depth="0.9" height="0.08"></a-box>
+      </a-entity>
       <a-box id="right wall 3" mixin="wall"
              width="0.3" depth="2.2" height="2.4"
              back="3.52" bottom="0" left="0.08">
@@ -274,7 +284,7 @@
              back="2.5" bottom="0" right="-0.9">
       </a-box>
       <a-box id="bathroom end wall 2" mixin="wall"
-             width="0.1" depth="0.4" height="2.4"
+             width="0.1" depth="0.3" height="2.4"
              back="2.3" bottom="0" right="-0.8">
       </a-box>
       <a-box id="bathroom end wall 2" mixin="wall"
@@ -455,6 +465,12 @@
                      width="0.3" depth="1.22" height="0.8"
                      back="0.62" bottom="0" left="0">
          </a-box>
+         <a-entity id="window" back="0.62" bottom="0.8" left="0.1">
+              <a-box mixin="velux" back="-0.61" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" front="0.61" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" top="0.7" width="0.08" depth="1.22" height="0.08"></a-box>
+              <a-box mixin="velux" bottom="-0.7" width="0.08" depth="1.22" height="0.08"></a-box>
+        </a-entity>
          <a-box id="bedroom right wall above window" mixin="wall"
                      width="0.3" depth="1.22" height="0.2"
                      back="0.62" bottom="2.2" left="0">
@@ -467,6 +483,12 @@
                      width="0.38" depth="0.75" height="0.8"
                      back="3.86" bottom="0" left="-0.08">
          </a-box>
+         <a-entity id="window" back="3.86" bottom="0.8" left="0.02">
+              <a-box mixin="velux" back="-0.375" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" front="0.375" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" top="0.7" width="0.08" depth="0.75" height="0.08"></a-box>
+              <a-box mixin="velux" bottom="-0.7" width="0.08" depth="0.75" height="0.08"></a-box>
+        </a-entity>
          <a-box id="bedroom right wall above window 2" mixin="wall"
             width="0.38" depth="0.75" height="0.2"
             back="3.86" bottom="2.2" left="-0.08">
@@ -476,19 +498,27 @@
                      back="4.61" bottom="0" left="-0.08">
          </a-box>
          <a-box id="bedroom end wall right" mixin="wall"
-                     width="0.9" depth="0.38" height="2.4"
+                     width="0.82" depth="0.38" height="2.4"
                      back="5.91" bottom="0" right="0.3">
          </a-box>
          <a-box id="bedroom end wall beneath window" mixin="wall"
                      width="2.42" depth="0.38" height="0.8"
                      back="5.91" bottom="0" right="-0.52">
          </a-box>
+         <a-entity id="window" back="6.01" bottom="0.8" right="-0.52">
+              <a-box mixin="velux" left="-1.21" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" right="1.21" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" left="-0.7" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" right="0.7" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" top="0.7" width="2.42" depth="0.08" height="0.08"></a-box>
+              <a-box mixin="velux" bottom="-0.7" width="2.42" depth="0.08" height="0.08"></a-box>
+        </a-entity>
          <a-box id="bedroom end wall above window" mixin="wall"
               width="2.42" depth="0.38" height="0.2"
               back="5.91" bottom="2.2" right="-0.52">
          </a-box>
          <a-box id="bedroom end wall left" mixin="wall"
-                     width="0.9" depth="0.38" height="2.4"
+                     width="0.82" depth="0.38" height="2.4"
                      back="5.91" bottom="0" right="-2.94">
          </a-box>
          <a-box id="bedroom left wall" mixin="wall"
@@ -499,6 +529,12 @@
                      width="0.38" depth="0.75" height="0.8"
                      front="4.59" bottom="0" left="-3.84">
          </a-box>
+         <a-entity id="window" front="4.59" bottom="0.8" left="-3.64">
+              <a-box mixin="velux" back="-0.375" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" front="0.375" width="0.08" depth="0.08" height="1.4"></a-box>
+              <a-box mixin="velux" top="0.7" width="0.08" depth="0.75" height="0.08"></a-box>
+              <a-box mixin="velux" bottom="-0.7" width="0.08" depth="0.75" height="0.08"></a-box>
+        </a-entity>
          <a-box id="bedroom left wall above window" mixin="wall"
                      width="0.38" depth="0.75" height="0.2"
                      front="4.59" bottom="2.2" left="-3.84">
