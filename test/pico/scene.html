@@ -268,8 +268,10 @@
            </a-entity>`
         : ''
       // A simple room: floor, three walls and some furniture-sized boxes.
+      // The floor's top sits a few cm above y=0, where the environment's
+      // ground is, so the two don't z-fight.
       const room = `
-        <a-box position="0 -0.05 0" width="10" depth="10" height="0.1" color="#ccb"></a-box>
+        <a-box position="0 0.04 0" width="10" depth="10" height="0.1" color="#ccb"></a-box>
         <a-box position="0 1.2 -3" width="6" depth="0.15" height="2.4" color="#E9E0D2"></a-box>
         <a-box position="-3 1.2 0" width="0.15" depth="6" height="2.4" color="#E9E0D2"></a-box>
         <a-box position="3 1.2 0" width="0.15" depth="6" height="2.4" color="#E9E0D2"></a-box>
