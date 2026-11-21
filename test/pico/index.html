@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pico VR tests</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #222; color: #eee; margin: 0 auto; padding: 16px; max-width: 760px; font-size: 18px; line-height: 1.4; }
+    a { color: #9cf; }
+    li { margin: 10px 0; }
+    .what { color: #bbb; font-size: 15px; }
+    code { color: #fc9; }
+    label { display: block; margin: 6px 0; }
+    button { font-size: 18px; padding: 8px 16px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Pico VR tests</h1>
+  <p>Each page is a small room. For each one, please:</p>
+  <ol>
+    <li>Enter VR and stay in for at least 5 seconds.</li>
+    <li>Look around, move with the left stick and turn with the right stick.</li>
+    <li>Exit VR. The page shows <b>PASS</b> or <b>FAIL</b> at the top, with a log underneath.</li>
+    <li>Tell us which pages failed. For a failed page, a screenshot of the log is the most useful thing you can send.</li>
+  </ol>
+
+  <h2>Series A: one change at a time</h2>
+  <p class="what">Each page adds one thing to the page before it. The first page that fails points to the cause.</p>
+  <ol id="series"></ol>
+
+  <h2>Series B: one feature on its own</h2>
+  <p class="what">Each page is the baseline plus one feature. Only needed if series A fails somewhere.</p>
+  <ul id="singles"></ul>
+
+  <h2>Build your own</h2>
+  <form id="custom" action="scene.html" method="get"></form>
+
+  <script>
+    const FEATURES = [
+      ['snap', 'Right stick snap-turns (left stick moves)'],
+      ['preview', 'Start on an orbiting camera, switch to first-person in VR'],
+      ['reattach', 'Re-attach snap-turn after entering VR'],
+      ['scene', 'SimpleDraw scene settings (color management, lights, environment)'],
+      ['button', 'Own "Enter VR" button instead of A-Frame\'s'],
+      ['sound', 'Sound plays in VR'],
+      ['vignette', 'Comfort vignette in VR'],
+    ]
+    const url = (flags) => 'scene.html' + (flags.length ? '?' + flags.map(f => f.includes('=') ? f : f + '=1').join('&') : '')
+    const label = Object.fromEntries(FEATURES)
+
+    const series = document.getElementById('series')
+    const add = (list, href, text, what) => {
+      const li = document.createElement('li')
+      li.innerHTML = `<a href="${href}">${text}</a><div class="what">${what}</div>`
+      list.appendChild(li)
+    }
+    add(series, url([]), 'Baseline', 'Same setup as the annexe room page, on A-Frame 1.7.1.')
+    const cumulative = []
+    for (const [key, text] of FEATURES) {
+      cumulative.push(key)
+      add(series, url([...cumulative]), '+ ' + text, cumulative.join(' + '))
+    }
+    add(series, url(['af=1.4.2', ...cumulative]), 'Everything, on A-Frame 1.4.2', 'Last page again, on the older A-Frame the annexe page uses.')
+
+    const singles = document.getElementById('singles')
+    for (const [key, text] of FEATURES) {
+      // Re-attaching snap-turn only means anything with snap-turn on.
+      const flags = key === 'reattach' ? ['snap', 'reattach'] : [key]
+      add(singles, url(flags), text, flags.join(' + '))
+    }
+    add(singles, url(['loco=cdn']), 'Locomotion library from the CDN', 'aframe-locomotion 0.2.0, as the annexe page loads it')
+
+    const form = document.getElementById('custom')
+    for (const [key, text] of FEATURES) {
+      form.insertAdjacentHTML('beforeend', `<label><input type="checkbox" name="${key}" value="1"> ${text}</label>`)
+    }
+    form.insertAdjacentHTML('beforeend', `
+      <label>A-Frame <select name="af"><option>1.7.1</option><option>1.4.2</option></select></label>
+      <label>Locomotion <select name="loco"><option value="sd">SimpleDraw's copy</option><option value="cdn">CDN 0.2.0</option></select></label>
+      <button type="submit">Open</button>`)
+  </script>
+</body>
+</html>

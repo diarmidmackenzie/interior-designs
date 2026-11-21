@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<!--
+  Pico VR test scene. Each query-string flag switches on one feature of
+  SimpleDraw's VR scene (simple-draw/src/components/VR/VR.tsx and
+  src/aframe/3d/vr-camera-mode.js), on top of a baseline that matches
+  ../../rooms/annexe/ (which is reported to work on Pico).
+
+  Flags (all off by default):
+    af=1.4.2   A-Frame version (default 1.7.1, SimpleDraw's)
+    loco=cdn   aframe-locomotion 0.2.0 from the CDN, as the annexe page uses
+               (default: the copy bundled in SimpleDraw, lib/)
+    snap=1     left hand smooth-locomotion, right hand snap-turn (SimpleDraw)
+               instead of right hand smooth-locomotion (annexe)
+    preview=1  start on an auto-rotating orbit camera, switch to the
+               first-person camera after entering VR (SimpleDraw on a headset)
+    reattach=1 after entering VR, remove and re-add snap-turn on the right hand
+               (SimpleDraw does this every time the view mode changes)
+    scene=1    SimpleDraw's scene settings: colorManagement, default lights
+               off, forest environment with SimpleDraw's two lights
+    button=1   hide A-Frame's VR button, use our own (SimpleDraw's prompt)
+    sound=1    looping sound starts on entering VR (SimpleDraw's music)
+    vignette=1 al-vignette + al-snap-turn-fade added after entering VR
+-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pico VR test</title>
+  <script>
+    const params = new URLSearchParams(location.search)
+    const flag = (name) => params.get(name) === '1'
+    const F = {
+      af: params.get('af') || '1.7.1',
+      loco: params.get('loco') === 'cdn' ? 'cdn' : 'sd',
+      snap: flag('snap'),
+      preview: flag('preview'),
+      reattach: flag('reattach'),
+      scene: flag('scene'),
+      button: flag('button'),
+      sound: flag('sound'),
+      vignette: flag('vignette'),
+    }
+    window.TEST_FLAGS = F
+    window.TEST_LOG = []
+    const log = (msg) => {
+      const t = (performance.now() / 1000).toFixed(1)
+      window.TEST_LOG.push(`[${t}s] ${msg}`)
+      const el = document.getElementById('log')
+      if (el) el.textContent = window.TEST_LOG.join('\n')
+    }
+    window.testLog = log
+    window.addEventListener('error', (e) => {
+      log(`ERROR: ${e.message} @ ${e.filename}:${e.lineno}:${e.colno}`)
+      if (e.error && e.error.stack) log(e.error.stack.split('\n').slice(0, 6).join('\n'))
+    })
+    window.addEventListener('unhandledrejection', (e) => {
+      const r = e.reason
+      log(`UNHANDLED REJECTION: ${r && r.message ? r.message : r}`)
+      if (r && r.stack) log(r.stack.split('\n').slice(0, 6).join('\n'))
+    })
+    const origError = console.error
+    console.error = function (...args) {
+      log('console.error: ' + args.map(a => (a && a.message) ? a.message : String(a)).join(' '))
+      origError.apply(console, args)
+    }
+
+    const locoSrc = F.loco === 'cdn'
+      ? 'https://cdn.jsdelivr.net/npm/aframe-locomotion@0.2.0/dist/aframe-locomotion.umd.min.js'
+      : 'lib/aframe-locomotion.umd.min.js'
+    document.write(`<script src="https://aframe.io/releases/${F.af}/aframe.min.js"><\/script>`)
+    document.write('<script src="https://unpkg.com/aframe-environment-component@1.5.0/dist/aframe-environment-component.min.js"><\/script>')
+    document.write(`<script src="${locoSrc}"><\/script>`)
+    if (F.preview) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/aframe-orbit-controls@1.3.2/dist/aframe-orbit-controls.min.js"><\/script>')
+    }
+  </script>
+  <script>
+    // A short, quiet looping chord as a WAV data URI, standing in for
+    // SimpleDraw's music file.
+    function makeToneUri() {
+      const rate = 22050, secs = 2, n = rate * secs
+      const buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf)
+      const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)) }
+      str(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); str(8, 'WAVE'); str(12, 'fmt ')
+      v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true)
+      v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true)
+      v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, n * 2, true)
+      for (let i = 0; i < n; i++) {
+        const t = i / rate
+        const s = Math.sin(2 * Math.PI * 220 * t) + Math.sin(2 * Math.PI * 277 * t) + Math.sin(2 * Math.PI * 330 * t)
+        v.setInt16(44 + i * 2, s * 2000, true)
+      }
+      let bin = ''
+      const bytes = new Uint8Array(buf)
+      for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i])
+      return 'data:audio/wav;base64,' + btoa(bin)
+    }
+
+    // Counts rendered frames, logs input sources, and reports a verdict on
+    // leaving VR. A frame that throws stops the WebXR loop for good, so a
+    // stalled count with an ERROR line above it is the failure we are after.
+    AFRAME.registerComponent('test-diag', {
+      init() {
+        this.frames = 0
+        this.inVR = false
+        this.samples = []
+        const scene = this.el
+        scene.addEventListener('enter-vr', () => {
+          this.inVR = true
+          this.frames = 0
+          this.samples = []
+          testLog('enter-vr')
+          const session = scene.renderer.xr.getSession && scene.renderer.xr.getSession()
+          if (session) {
+            const show = () => testLog('input sources: ' +
+              (Array.from(session.inputSources).map(s => `${s.handedness}[${s.profiles.join(',')}]`).join(' ') || 'none'))
+            show()
+            session.addEventListener('inputsourceschange', show)
+          } else {
+            testLog('no XR session object')
+          }
+          let secs = 0
+          clearInterval(this.timer)
+          this.timer = setInterval(() => {
+            secs++
+            this.samples.push(this.frames)
+            if (secs <= 10 || secs % 10 === 0) testLog(`in VR ${secs}s: ${this.frames} frames`)
+          }, 1000)
+        })
+        scene.addEventListener('exit-vr', () => {
+          this.inVR = false
+          clearInterval(this.timer)
+          // Stalled = the frame count stopped going up: fewer than 5 new
+          // frames after the first second in VR. A slow frame rate is not a
+          // stall.
+          const s = this.samples
+          const stalled = s.length >= 3 && (s[s.length - 1] - s[0]) < 5
+          const verdict = s.length < 3
+            ? `NOT ENOUGH TIME IN VR (stay in at least 5 seconds) - ${this.frames} frames`
+            : stalled
+              ? `FAIL - rendering stalled (${this.frames} frames in ${this.samples.length}s)`
+              : `PASS - rendering kept going (${this.frames} frames in ${this.samples.length}s)`
+          testLog('exit-vr: ' + verdict)
+          document.getElementById('verdict').textContent = verdict
+          document.getElementById('verdict').className = stalled ? 'fail' : 'pass'
+        })
+        for (const id of ['left-hand', 'right-hand']) {
+          const hand = document.getElementById(id)
+          hand.addEventListener('controllerconnected', (e) => testLog(`${id} controllerconnected: ${e.detail && e.detail.name}`))
+        }
+      },
+      tick() {
+        if (this.inVR) this.frames++
+      },
+    })
+
+    // The SimpleDraw lifecycle that happens after entering VR. SimpleDraw does
+    // it from a React effect, i.e. shortly after the enter-vr event, not in it.
+    AFRAME.registerComponent('test-lifecycle', {
+      init() {
+        const scene = this.el
+        const F = window.TEST_FLAGS
+        const fp = document.getElementById('camera')
+        const dh = document.getElementById('doll-camera')
+        if (F.preview) {
+          const startPreview = () => {
+            fp.setAttribute('camera', 'active', false)
+            dh.setAttribute('camera', 'active', true)
+            dh.setAttribute('orbit-controls', 'autoRotate', true)
+            dh.setAttribute('orbit-controls', 'autoRotateSpeed', 0.4)
+          }
+          if (scene.hasLoaded) startPreview()
+          else scene.addEventListener('loaded', startPreview, { once: true })
+        }
+        scene.addEventListener('enter-vr', () => setTimeout(() => {
+          if (F.preview) {
+            dh.setAttribute('camera', 'active', false)
+            dh.setAttribute('orbit-controls', 'autoRotate', false)
+            fp.setAttribute('camera', 'active', true)
+            testLog('switched to first-person camera')
+          }
+          const right = document.getElementById('right-hand')
+          if (F.vignette) {
+            fp.insertAdjacentHTML('afterbegin',
+              `<al-vignette motion-source="#rig"></al-vignette>
+               <al-snap-turn-fade rotation-source="#rig"></al-snap-turn-fade>`)
+            testLog('added vignette')
+          }
+          if (F.reattach && F.snap) {
+            right.removeAttribute('snap-turn')
+            right.setAttribute('snap-turn', `target: #rig; reference: #camera; delay: ${F.vignette ? 0.1 : 0}`)
+            testLog('re-attached snap-turn')
+          }
+          if (F.sound) {
+            scene.setAttribute('sound', { src: window.TONE_URI, autoplay: true, loop: true, volume: 0.5 })
+            testLog('sound started')
+          }
+        }, 0))
+        scene.addEventListener('exit-vr', () => {
+          if (F.sound) scene.removeAttribute('sound')
+          if (F.preview) {
+            fp.setAttribute('camera', 'active', false)
+            dh.setAttribute('camera', 'active', true)
+            dh.setAttribute('orbit-controls', 'autoRotate', true)
+          }
+        })
+      },
+    })
+    window.TONE_URI = window.TEST_FLAGS.sound ? makeToneUri() : ''
+  </script>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; background: #222; }
+    #panel {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+      background: rgba(0, 0, 0, 0.8); color: #eee; padding: 8px 12px; font-size: 14px;
+      max-height: 45vh; overflow: auto;
+    }
+    #panel a { color: #9cf; }
+    #verdict { font-size: 20px; font-weight: bold; margin: 4px 0; }
+    #verdict.pass { color: #7e7; }
+    #verdict.fail { color: #f77; }
+    #log { white-space: pre-wrap; font-family: monospace; font-size: 12px; margin: 4px 0 0; }
+    #enter {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
+      font-size: 22px; padding: 14px 28px; border-radius: 10px; border: none;
+      background: #2a7; color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="panel">
+    <div><a href="index.html">All test pages</a> &middot; <span id="title"></span></div>
+    <div id="verdict">Enter VR, stay in at least 5 seconds, look around and move, then exit.</div>
+    <div id="log"></div>
+  </div>
+  <script>
+    (function () {
+      const F = window.TEST_FLAGS
+      const on = Object.entries(F).filter(([k, v]) => v === true).map(([k]) => k)
+      const title = `A-Frame ${F.af}, locomotion ${F.loco}` + (on.length ? `, + ${on.join(' + ')}` : ', baseline')
+      document.getElementById('title').textContent = title
+      testLog('page: ' + title)
+      testLog('user agent: ' + navigator.userAgent)
+
+      const sceneAttrs = F.scene
+        ? 'renderer="colorManagement: true" light="defaultLightsEnabled: false"'
+        : 'environment="preset:forest; lighting:none"'
+      const uiAttr = F.button ? 'xr-mode-ui="enabled: false"' : ''
+      const lights = F.scene
+        ? `<a-entity id="environment" position="0 -0.1 0" environment="preset:forest">
+             <a-entity light="type: hemisphere; color: #92dacf; intensity: 1.5; groundColor: #e4c356"></a-entity>
+             <a-entity light="intensity: 1.5; type: directional"></a-entity>
+           </a-entity>`
+        : `<a-entity light="type: ambient; color: #BBB"></a-entity>
+           <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 0"></a-entity>`
+      const hands = F.snap
+        ? `<a-entity id="left-hand" hand-controls="hand: left"
+                     smooth-locomotion="target: #rig; reference: #camera"></a-entity>
+           <a-entity id="right-hand" hand-controls="hand: right"
+                     snap-turn="target: #rig; reference: #camera; delay: 0"></a-entity>`
+        : `<a-entity id="left-hand" hand-controls="hand: left"></a-entity>
+           <a-entity id="right-hand" hand-controls="hand: right"
+                     smooth-locomotion="target: #rig; reference: #camera"></a-entity>`
+      const dollCamera = F.preview
+        ? `<a-entity camera id="doll-camera" active="false" look-controls="enabled: false"
+                     orbit-controls="target: 0 1 0; minDistance: 5; maxDistance: 180; initialPosition: 0 5 10; rotateSpeed: 0.5">
+           </a-entity>`
+        : ''
+      // A simple room: floor, three walls and some furniture-sized boxes.
+      const room = `
+        <a-box position="0 -0.05 0" width="10" depth="10" height="0.1" color="#ccb"></a-box>
+        <a-box position="0 1.2 -3" width="6" depth="0.15" height="2.4" color="#E9E0D2"></a-box>
+        <a-box position="-3 1.2 0" width="0.15" depth="6" height="2.4" color="#E9E0D2"></a-box>
+        <a-box position="3 1.2 0" width="0.15" depth="6" height="2.4" color="#E9E0D2"></a-box>
+        <a-box position="-1.8 0.45 -2.2" width="2" depth="1.4" height="0.9" color="#755331"></a-box>
+        <a-box position="1.5 0.375 -0.5" width="1" depth="1" height="0.75" color="#654321"></a-box>
+        <a-box position="2.4 1 -2.6" width="0.6" depth="0.6" height="2" color="#fff"></a-box>
+        <a-box position="0 2.45 0" width="6" depth="6" height="0.1" color="#fff" visible="false"></a-box>`
+
+      document.write(`
+        <a-scene test-diag test-lifecycle ${sceneAttrs} ${uiAttr}>
+          ${lights}
+          ${room}
+          <a-entity id="rig" rotation="0 0 0" position="0 0 4">
+            <a-camera id="camera" active="true"></a-camera>
+            ${hands}
+          </a-entity>
+          ${dollCamera}
+        </a-scene>
+        ${F.button ? '<button id="enter" onclick="document.querySelector(\'a-scene\').enterVR()">Enter VR</button>' : ''}
+      `)
+    })()
+  </script>
+</body>
+
+</html>
